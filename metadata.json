@@ -1,0 +1,6 @@
+{
+  "name": "Prompt Motion Studio",
+  "description": "Video style showcase and Claude/AI motion prompt generator with interactive customization, voiceover toggles, and click-to-copy prompts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
