@@ -5,9 +5,41 @@ interface CardVisualPreviewProps {
   title?: string;
   category?: string;
   number?: string;
+  thumbnailUrl?: string;
 }
 
-export const CardVisualPreview: React.FC<CardVisualPreviewProps> = ({ id, title, category, number }) => {
+export const CardVisualPreview: React.FC<CardVisualPreviewProps> = ({
+  id,
+  title,
+  category,
+  number,
+  thumbnailUrl,
+}) => {
+  // If custom thumbnail image is uploaded or linked, render it
+  if (thumbnailUrl && thumbnailUrl.trim() !== '') {
+    return (
+      <div className="relative w-full h-44 sm:h-48 bg-slate-900 overflow-hidden select-none group">
+        <img
+          src={thumbnailUrl}
+          alt={title || 'Motion style thumbnail'}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={(e) => {
+            (e.target as HTMLElement).style.display = 'none';
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none" />
+        <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 text-[10px] font-mono pointer-events-none">
+          <span className="bg-[#dc4c38] text-white px-2 py-0.5 rounded-full font-bold shadow-xs">
+            {number || '#NEW'}
+          </span>
+          <span className="bg-black/60 text-white backdrop-blur-xs px-2 py-0.5 rounded">
+            {category || 'Motion Style'}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   switch (id) {
     case 'creator-motion-graphics':
       return (

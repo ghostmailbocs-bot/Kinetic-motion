@@ -7,7 +7,10 @@ import {
   Trash2,
   Check,
   Code,
-  Sparkles
+  Sparkles,
+  Image as ImageIcon,
+  Upload,
+  Link2
 } from 'lucide-react';
 
 interface TemplateManagerModalProps {
@@ -75,6 +78,19 @@ export const TemplateManagerModal: React.FC<TemplateManagerModalProps> = ({
     setTimeout(() => setSaveSuccess(false), 2400);
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        handleUpdateCurrent('thumbnailUrl', dataUrl);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleAddNewTemplate = () => {
     const newNumber = `#0${items.length + 1}`;
     const newId = `custom-style-${Date.now()}`;
@@ -87,6 +103,7 @@ export const TemplateManagerModal: React.FC<TemplateManagerModalProps> = ({
       howItExplains: 'Describe how ideas and key visual moments land step by step...',
       defaultTopic: 'How to build scalable systems with AI',
       tags: ['Custom', 'Motion'],
+      thumbnailUrl: '',
       voiceoverPrompt: 'With Voiceover: Clear, energetic narration synchronized with on-screen visual hits.',
       noVoiceoverPrompt: 'No Voiceover: Rich rhythmic sound effects and impacts only. No spoken dialogue.',
       customPromptTemplate: `You are an expert video animator specializing in {{title}}.\n\nTOPIC:\n"{{topic}}"\n\nSTYLE SPECIFICATION:\n{{shortDescription}}\n\nEXPLANATION LOGIC:\n{{howItExplains}}\n\nAUDIO:\n{{audioDirection}}\n\nSTORYBOARD:\n{{storyboardProtocol}}\n\nGenerate complete animation code.`,
@@ -332,6 +349,95 @@ export const TemplateManagerModal: React.FC<TemplateManagerModalProps> = ({
                       <Trash2 className="w-4 h-4" />
                     </button>
                   )}
+                </div>
+              </div>
+
+              {/* Thumbnail Image Section */}
+              <div className="bg-slate-50/90 border border-slate-200 rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4 text-[#e5825a]" />
+                    <label className="text-xs font-bold text-slate-900">
+                      Thumbnail Image
+                    </label>
+                  </div>
+                  {currentTemplate.thumbnailUrl && (
+                    <button
+                      type="button"
+                      onClick={() => handleUpdateCurrent('thumbnailUrl', '')}
+                      className="text-[11px] text-red-600 hover:text-red-700 font-semibold cursor-pointer flex items-center gap-1 transition"
+                    >
+                      <Trash2 className="w-3 h-3" /> Remove image
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  {/* Thumbnail Preview Box */}
+                  <div className="w-32 h-20 bg-slate-200/80 rounded-xl overflow-hidden border border-slate-300 flex-shrink-0 flex items-center justify-center text-slate-400 relative shadow-2xs">
+                    {currentTemplate.thumbnailUrl ? (
+                      <img
+                        src={currentTemplate.thumbnailUrl}
+                        alt="Thumbnail preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-[10px] text-slate-400 text-center p-2">
+                        <ImageIcon className="w-5 h-5 mb-0.5 opacity-60 text-slate-500" />
+                        <span>No image set</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Image Upload & Link Inputs */}
+                  <div className="flex-1 space-y-2 w-full">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Upload Button */}
+                      <label className="px-3 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold shadow-2xs transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                        <Upload className="w-3.5 h-3.5 text-slate-600" />
+                        <span>Upload from device</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-[11px] text-slate-400">or paste image URL:</span>
+                    </div>
+
+                    {/* URL Input */}
+                    <div className="relative">
+                      <Link2 className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={currentTemplate.thumbnailUrl || ''}
+                        onChange={(e) => handleUpdateCurrent('thumbnailUrl', e.target.value)}
+                        placeholder="https://example.com/thumbnail.jpg or paste URL..."
+                        className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-xl focus:ring-1 focus:ring-[#e5825a] focus:outline-none bg-white font-mono text-slate-700"
+                      />
+                    </div>
+
+                    {/* Preset Aesthetics */}
+                    <div className="flex flex-wrap items-center gap-1.5 text-[10px] pt-0.5">
+                      <span className="text-slate-400 font-semibold">Presets:</span>
+                      {[
+                        { label: 'Kinetic Neon', url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&auto=format&fit=crop&q=80' },
+                        { label: 'Dark Slate', url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80' },
+                        { label: 'Cyber Grid', url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80' },
+                        { label: 'Warm Minimal', url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600&auto=format&fit=crop&q=80' },
+                      ].map((preset) => (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => handleUpdateCurrent('thumbnailUrl', preset.url)}
+                          className="px-2 py-0.5 bg-white hover:bg-slate-100 border border-slate-200 rounded text-slate-600 transition cursor-pointer"
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 

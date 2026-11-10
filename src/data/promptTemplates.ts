@@ -10,6 +10,7 @@ export interface PromptTemplate {
   customPromptTemplate?: string;
   voiceoverPrompt?: string;
   noVoiceoverPrompt?: string;
+  thumbnailUrl?: string;
 }
 
 export const DEFAULT_PROMPT_TEMPLATES: PromptTemplate[] = [

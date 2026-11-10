@@ -105,6 +105,20 @@ export const PromptModal: React.FC<PromptModalProps> = ({
 
         {/* Scrollable Content Body */}
         <div className="p-5 sm:p-8 overflow-y-auto space-y-4 sm:space-y-5">
+          {/* Custom Thumbnail Banner if set */}
+          {template.thumbnailUrl && template.thumbnailUrl.trim() !== '' && (
+            <div className="w-full h-40 sm:h-48 rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs mb-3 -mt-1 bg-slate-900">
+              <img
+                src={template.thumbnailUrl}
+                alt={template.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            </div>
+          )}
+
           {/* Style Category & Number */}
           <div className="text-xs sm:text-sm font-semibold text-[#dc4c38] tracking-wide">
             {template.number} {template.category}

@@ -29,6 +29,7 @@ export const PromptCard: React.FC<PromptCardProps> = ({
           title={template.title}
           category={template.category}
           number={template.number}
+          thumbnailUrl={template.thumbnailUrl}
         />
 
         {/* Quick action overlay buttons */}

@@ -124,6 +124,7 @@ export default function App() {
       howItExplains: 'Describe how ideas and key visual moments land step by step...',
       defaultTopic: 'How to build scalable systems with AI',
       tags: ['Custom', 'Motion'],
+      thumbnailUrl: '',
       voiceoverPrompt: 'With Voiceover: Clear, energetic narration synchronized with on-screen visual hits.',
       noVoiceoverPrompt: 'No Voiceover: Rich rhythmic sound effects and impacts only. No spoken dialogue.',
       customPromptTemplate: `You are an expert video animator specializing in {{title}}.\n\nTOPIC:\n"{{topic}}"\n\nSTYLE SPECIFICATION:\n{{shortDescription}}\n\nEXPLANATION LOGIC:\n{{howItExplains}}\n\nAUDIO:\n{{audioDirection}}\n\nSTORYBOARD:\n{{storyboardProtocol}}\n\nGenerate complete animation code.`,
